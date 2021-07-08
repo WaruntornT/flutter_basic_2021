@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,8 +13,11 @@ class NewPage extends StatefulWidget {
 class _NewPageState extends State<NewPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text("NewPage"),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Flutter Basic 2021'),
+        ),
+        body: Text('NewPage'),
     );
   }
 }
