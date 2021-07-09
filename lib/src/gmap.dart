@@ -14,6 +14,22 @@ class Gmap extends StatefulWidget {
 class _GmapState extends State<Gmap> {
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    dropDown_mayType = '1';//list_mapType.first.toString();
+  }
+
+  @override
+  void dispose() {
+    _locationSubscription?.cancel();
+    setState(() {
+      _locationSubscription = null;
+    });
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _createMarkerImageFromAsset(context);
     return Scaffold(
@@ -24,23 +40,101 @@ class _GmapState extends State<Gmap> {
           //   icon: Icon(Icons.home),
           //   onPressed: () {
           //     setState(() {
-          //       _goHome();
+          //       _goHome(); // BIS Group
           //     });
           //   }, ),
           IconButton(
               icon: Icon(Icons.my_location_rounded),
-              onPressed: () {
-                setState(() {
-                  _goToMe();
+              onPressed: () {setState(() {
+                _goToMe(); // ไปที่ location
                 });
               }, )
         ]),
       body: Row(
         children: [
           Expanded(
-            flex: 1,
-            child: 
-              Text('data')
+            flex: 2,
+            child: Column(
+              children: [
+                DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                    isExpanded: true,
+                    isDense: true,
+                    //hint: Text('เลือกทั้งหมด'),
+                    //autofocus: true,
+                    // Reduces the dropdowns height by +/- 50%
+                    icon: Icon(Icons.keyboard_arrow_down),
+                    items: list_mapType.map((item) {
+                      return new DropdownMenuItem(
+                        value: item['id'].toString(),
+                        child: Text(item['name'].toString()),
+                      );
+                    }).toList(),
+                    onChanged: (newVal) {
+                      setState(() {
+                        dropDown_mayType = newVal;
+                        if(newVal=='1'){_mapType = MapType.normal;}
+                        if(newVal=='2'){_mapType = MapType.terrain;}
+                        if(newVal=='3'){_mapType = MapType.satellite;}
+                        if(newVal=='4'){_mapType = MapType.hybrid;}
+                      });
+                    },
+                    value: dropDown_mayType,
+                  ),
+                ),
+                CheckboxListTile(
+                  title: Text('Traffic'),
+                  //secondary: Icon(Icons.traffic),
+                  controlAffinity: ListTileControlAffinity.leading,
+                  value: checkBox_traffic,
+                  onChanged: (bool value) {
+                    setState(() {
+                      checkBox_traffic = value;
+                    });
+                  },
+                ),
+                CheckboxListTile(
+                  title: Text('My Location'),
+                  //secondary: Icon(Icons.traffic),
+                  controlAffinity: ListTileControlAffinity.leading,
+                  value: checkBox_myLocation,
+                  onChanged: (bool value) {
+                    setState(() {
+                      checkBox_myLocation = value;
+                    });
+                  },
+                ),
+                Expanded(
+                  child: Center(
+                    child: Container(
+                      alignment: Alignment.bottomCenter,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          FlatButton(
+                            textColor: Colors.white,
+                            height: 80.0,
+                            color: Colors.blueAccent,
+                            onPressed: () {},
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(Icons.pin_drop_outlined, color: Colors.white,),
+                                ),
+                                Text(' บันทึกตำแหน่ง ', style : TextStyle(fontWeight: FontWeight.normal), )
+                              ],
+                            ),
+                          ),
+
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )
             // Column(
             //   children: [
             //     Column(
@@ -124,7 +218,55 @@ class _GmapState extends State<Gmap> {
             child:
             Stack(
               children: [
-                getGmap(),
+                //Text('data'),
+                //getGmap(),
+                FutureBuilder(
+                  future: _getLocationAll(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      if(_location.latitude == null || _location.longitude == null){
+                        return CircularProgressIndicator();
+                      }else{
+                        return getGmap(_location);
+                      }
+                      // GoogleMap(
+                      //   markers: _markers,
+                      //   mapType: _mapType,
+                      //   myLocationEnabled: checkBox_myLocation,
+                      //   myLocationButtonEnabled: checkBox_myLocation,
+                      //   trafficEnabled: checkBox_traffic,
+                      //
+                      //   initialCameraPosition: CameraPosition(
+                      //     target: LatLng(13.7650836, 100.5379664),
+                      //     zoom: 16,
+                      //   ),
+                      //   onMapCreated: (GoogleMapController controller) {
+                      //     _controller.complete(controller);
+                      //   },
+                      //   onTap: (latlng) {
+                      //     _handleTap(latlng);
+                      //   },
+                      // );
+                      // return GoogleMap(
+                      //   mapType: MapType.normal,
+                      //   onMapCreated: _onMapCreated,
+                      //   myLocationEnabled: true,
+                      //   initialCameraPosition: CameraPosition(
+                      //       target: LatLng(userLocation.latitude, userLocation.longitude),
+                      //       zoom: 15),
+                      // );
+                    } else {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            CircularProgressIndicator(),
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                ),
                 // Positioned(
                 //   top: 16,
                 //   right: 16, //kIsWeb ? 60 : 16,
@@ -148,22 +290,29 @@ class _GmapState extends State<Gmap> {
 
   /// Parameter Start
   Completer<GoogleMapController> _controller = Completer();
+
   Set<Marker> _markers = Set();
+  MapType _mapType = MapType.normal;
   BitmapDescriptor _markerIcon;
 
-  // final Location location = Location();
-  // PermissionStatus _permissionGranted;
-  // bool _serviceEnabled;
-  // bool _loading = false;
-  // LocationData _location;
-  // String _error;
-  // StreamSubscription<LocationData> _locationSubscription;
-  // LocationData currentLocation;
-  //
-  // //StreamSubscription _locationSubscription;
-  // Location _locationTracker = Location();
-  // Marker marker;
-  // Circle circle;
+  String dropDown_mayType;
+  final List list_mapType = [
+    {"id":1,"name":"Normal"},
+    {"id":2,"name":"Terrian"},
+    {"id":3,"name":"Satellite"},
+    {"id":4,"name":"Hybrid"}
+  ];
+  bool checkBox_traffic = false;
+  bool checkBox_myLocation = true;
+
+  final Location location = Location();
+  PermissionStatus _permissionGranted;
+  bool _serviceEnabled;
+  bool _loading = false;
+  LocationData _location;
+  String _error;
+  StreamSubscription<LocationData> _locationSubscription;
+  LocationData currentLocation;
   /// Parameter End
 
   /// Location Start
@@ -171,18 +320,15 @@ class _GmapState extends State<Gmap> {
   // Future<void> _checkPermissions() async {
   //   final PermissionStatus permissionGrantedResult =
   //   await location.hasPermission();
-  //   setState(() {
-  //     _permissionGranted = permissionGrantedResult;
-  //   });
+  //   setState(() {_permissionGranted = permissionGrantedResult;});
   // }
   // // ร้องขอ สิทธ์
   // Future<void> _requestPermission() async {
-  //   if (_permissionGranted != PermissionStatus.granted) {
-  //     final PermissionStatus permissionRequestedResult =
-  //     await location.requestPermission();
-  //     setState(() {
-  //       _permissionGranted = permissionRequestedResult;
-  //     });
+  //   if (_permissionGranted != PermissionStatus.granted || _permissionGranted == null) {
+  //     print('_requestPermission : ${_permissionGranted}');
+  //     final PermissionStatus permissionRequestedResult = await location.requestPermission();
+  //     setState(() {_permissionGranted = permissionRequestedResult;});
+  //     print('_requestPermission : ${_permissionGranted}');
   //   }
   // }
   // // เช็ค การเปิด Location
@@ -197,32 +343,52 @@ class _GmapState extends State<Gmap> {
   //   if (_serviceEnabled == true) {
   //     return;
   //   }
+  //   print('_requestService : ${_serviceEnabled}');
   //   final bool serviceRequestedResult = await location.requestService();
-  //   setState(() {
-  //     _serviceEnabled = serviceRequestedResult;
-  //   });
+  //   setState(() {_serviceEnabled = serviceRequestedResult;});
+  //   print('_requestService : ${_serviceEnabled}');
   // }
-  // // ตรวจจับ Location
-  // Future<void> _listenLocation() async {
-  //   _locationSubscription =
-  //       location.onLocationChanged.handleError((dynamic err) {
-  //         if (err is PlatformException) {
-  //           setState(() {
-  //             _error = err.code;
-  //           });
-  //         }
-  //         _locationSubscription?.cancel();
-  //         setState(() {
+  // // ตรวจจับ Location ครั้งเดียว
+  // Future<void> _getLocation() async {
+  //   setState(() {
+  //     _error = null;
+  //     _loading = true;
+  //   });
+  //   try {
+  //     final LocationData _locationResult = await location.getLocation();
+  //     setState(() {
+  //       _location = _locationResult;
+  //       _loading = false;
+  //     });
+  //   } on PlatformException catch (err) {
+  //     setState(() {
+  //       _error = err.code;
+  //       _loading = false;
+  //     });
+  //   }
   //
-  //           _locationSubscription = null;
-  //         });
-  //       }).listen((LocationData currentLocation) {
-  //         setState(() {
-  //           _error = null;
-  //           _location = currentLocation;
-  //         });
+  //   print('_getLocation : ${_loading}');
+  // }
+  // // ตรวจจับ Location ตลอดเวลา
+  // Future<void> _listenLocation() async {
+  //   _locationSubscription = location.onLocationChanged.handleError((dynamic err) {
+  //     if (err is PlatformException) {
+  //       setState(() {
+  //         _error = err.code;
   //       });
-  //   setState(() {});
+  //     }
+  //       _locationSubscription?.cancel();
+  //     setState(() {
+  //       _locationSubscription = null;
+  //     });
+  //   }).listen((LocationData currentLocation) {
+  //     setState(() {
+  //       _error = null;
+  //       _location = currentLocation;
+  //     });
+  //   });
+  //   setState(() { });
+  //   print('_listenLocation : ${_location}');
   // }
   // // หยุดตรวจจับ Location
   // Future<void> _stopListen() async {
@@ -231,19 +397,33 @@ class _GmapState extends State<Gmap> {
   //     _locationSubscription = null;
   //   });
   // }
+
+  Future _getLocationAll() async {
+    try {
+      final LocationData _locationResult = await location.getLocation();
+      setState(() {
+        _location = _locationResult;
+      });
+    } catch (e) {
+      return _location = null;
+    }
+    return _location;
+  }
   /// Location End
 
   /// Google Maps Start
   // แผนที่ google maps
-  getGmap(){
+  Widget getGmap(LocationData latlng) {
     return GoogleMap(
       markers: _markers,
-      mapType: MapType.normal,
-      myLocationEnabled: true,
-      myLocationButtonEnabled: true,
+      mapType: _mapType,
+      myLocationEnabled: checkBox_myLocation,
+      myLocationButtonEnabled: checkBox_myLocation,
+      trafficEnabled: checkBox_traffic,
+
       initialCameraPosition: CameraPosition(
-        target: LatLng(13.7650836, 100.5379664),
-        zoom: 16,
+        target: LatLng(latlng.latitude,latlng.longitude),//LatLng(13.7650836, 100.5379664),
+        zoom: 15,
       ),
       onMapCreated: (GoogleMapController controller) {
         _controller.complete(controller);
@@ -258,14 +438,14 @@ class _GmapState extends State<Gmap> {
     setState(() {
       _markers.clear();
 
-      _markers.add(Marker(
-        markerId: MarkerId(LatLng(13.9272683,100.5330269).toString()),
-        position: LatLng(13.9272683,100.5330269),
-        infoWindow: InfoWindow(
-          title: 'I am a marker',
-        ),
-        icon: _markerIcon,
-      ));
+      // _markers.add(Marker(
+      //   markerId: MarkerId(LatLng(13.9272683,100.5330269).toString()),
+      //   position: LatLng(13.9272683,100.5330269),
+      //   infoWindow: InfoWindow(
+      //     title: 'I am a marker',
+      //   ),
+      //   icon: _markerIcon,
+      // ));
 
       _markers.add(Marker(
         markerId: MarkerId(point.toString()),
@@ -285,28 +465,30 @@ class _GmapState extends State<Gmap> {
   }
   // ไปที่ location ตัวเอง
   Future _goToMe() async {
+    await _getLocationAll();
     final GoogleMapController controller = await _controller.future;
     //currentLocation = await _listenLocation();
     controller.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
-          target: LatLng(13.9272683,100.5330269), //Bis Group
-          zoom: 16,
+          target: LatLng(_location.latitude,_location.longitude),
+          //LatLng(13.9272683,100.5330269), //Bis Group
+          zoom: 15,
         )));
 
-    setState(() {
-      _markers.clear();
-      _markers.add(Marker(
-        markerId: MarkerId(LatLng(13.9272683,100.5330269).toString()),
-        position: LatLng(13.9272683,100.5330269),
-        infoWindow: InfoWindow(
-          title: 'I am a marker',
-        ),
-        icon: _markerIcon,
-      ));
-    });
+    // setState(() {
+    //   _markers.clear();
+    //   _markers.add(Marker(
+    //     markerId: MarkerId(LatLng(_location.latitude,_location.longitude).toString()),
+    //     position: LatLng(_location.latitude,_location.longitude),
+    //     infoWindow: InfoWindow(
+    //       title: 'I am a marker',
+    //     ),
+    //     icon: _markerIcon,
+    //   ));
+    // });
 
   }
-
+  // สร้าง Marker icon ด้วยรูปภาพ
   Future<void> _createMarkerImageFromAsset(BuildContext context) async {
     if (_markerIcon == null) {
       final ImageConfiguration imageConfiguration =
@@ -316,13 +498,12 @@ class _GmapState extends State<Gmap> {
           .then(_updateBitmap);
     }
   }
-
+  // กำหนด ค่า icon ใส่ parameter
   void _updateBitmap(BitmapDescriptor bitmap) {
     setState(() {
       _markerIcon = bitmap;
     });
   }
-
   //
   // Future _goHome() async {
   //   print('_goHome');

@@ -57,6 +57,8 @@ class _TestPageState extends State<TestPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
+
+          _getLocation();
           mapController.animateCamera(CameraUpdate.newLatLngZoom(
               LatLng(userLocation.latitude, userLocation.longitude), 18));
           showDialog(
