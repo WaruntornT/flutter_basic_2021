@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_basic_2021/src/checkPlatform.dart';
 
 // Check Screen Layout
 import 'package:flutter_basic_2021/src/home.dart';
 
 // Google Maps
 import 'package:flutter_basic_2021/src/gmap.dart';
-import 'package:flutter_basic_2021/src/testpage.dart';
+import 'package:flutter_basic_2021/src/testmappage.dart';
 
 import 'package:flutter_basic_2021/src/newPage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -121,14 +122,39 @@ class _MyHomePageDetailState extends State<MyHomePageDetail> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => TestPage()),
+                              MaterialPageRoute(builder: (context) => TestMapPage()),
                             );
                           },
                         ),
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 3),
-                            child: new Text(" ... " , textAlign: TextAlign.left),
+                            child: new Text(" แสดงแผนที่พร้อมร้องขอตำแหน่ง Location" , textAlign: TextAlign.left),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Row(
+                      children: <Widget>[
+                        ElevatedButton(
+                          child: Text('Example : Check Platform'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => CheckPlatform()),
+                            );
+                          },
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: new Text("ตรวจสอบ Device ว่าใช้ Platform Android,iOS,Web เป็นต้น" , textAlign: TextAlign.left),
                           ),
                         ),
                       ],

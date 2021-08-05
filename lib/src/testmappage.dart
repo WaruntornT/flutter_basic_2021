@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class TestPage extends StatefulWidget {
+class TestMapPage extends StatefulWidget {
   @override
-  _TestPageState createState() => _TestPageState();
+  _TestMapPageState createState() => _TestMapPageState();
 }
 
-class _TestPageState extends State<TestPage> {
+class _TestMapPageState extends State<TestMapPage> {
   Position userLocation;
   GoogleMapController mapController;
 
