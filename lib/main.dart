@@ -6,10 +6,14 @@ import 'package:flutter_basic_2021/src/home.dart';
 
 // Google Maps
 import 'package:flutter_basic_2021/src/gmap.dart';
+
 import 'package:flutter_basic_2021/src/testmappage.dart';
 
 // Location
 import 'package:flutter_basic_2021/src/location.dart';
+
+import 'package:flutter_basic_2021/src/appsetting.dart';
+import 'package:flutter_basic_2021/src/permissionhandler.dart';
 
 import 'package:flutter_basic_2021/src/newPage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -158,6 +162,56 @@ class _MyHomePageDetailState extends State<MyHomePageDetail> {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 3),
                             child: new Text(" Location Package" , textAlign: TextAlign.left),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Row(
+                      children: <Widget>[
+                        ElevatedButton(
+                          child: Text('Example : App Setting'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => AppSetting()),
+                            );
+                          },
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: new Text(" App Setting Package : เปิดหน้าการตั้งค่า ต่าง ๆ ในแอพ" , textAlign: TextAlign.left),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Row(
+                      children: <Widget>[
+                        ElevatedButton(
+                          child: Text('Example : Permission Handler '),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => PermissionHandler()),
+                            );
+                          },
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: new Text(" permission_handler Package : เช็คสิทธิและการจัดการต่าง ๆ ตัวอย่าง Location" , textAlign: TextAlign.left),
                           ),
                         ),
                       ],
