@@ -24,7 +24,7 @@ dependencies:
   intl: ^0.17.0
   # Package : location 4.2.0
   # https://pub.dev/packages/location
-  location: ^4.2.0
+  location: ^4.3.0
 
   geolocator: ^7.2.0+1
   geolocator_web: ^2.0.4
@@ -32,6 +32,9 @@ dependencies:
   google_maps_flutter: ^2.0.6
   google_maps_flutter_web: ^0.3.0+2
   url_launcher: ^6.0.9
+
+  app_settings: ^4.1.1
+  permission_handler: ^8.1.4+2
 
 dev_dependencies:
   flutter_test:

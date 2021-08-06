@@ -8,6 +8,9 @@ import 'package:flutter_basic_2021/src/home.dart';
 import 'package:flutter_basic_2021/src/gmap.dart';
 import 'package:flutter_basic_2021/src/testmappage.dart';
 
+// Location
+import 'package:flutter_basic_2021/src/location.dart';
+
 import 'package:flutter_basic_2021/src/newPage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -130,6 +133,31 @@ class _MyHomePageDetailState extends State<MyHomePageDetail> {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 3),
                             child: new Text(" แสดงแผนที่พร้อมร้องขอตำแหน่ง Location" , textAlign: TextAlign.left),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Row(
+                      children: <Widget>[
+                        ElevatedButton(
+                          child: Text('Example : Location'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Location()),
+                            );
+                          },
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: new Text(" Location Package" , textAlign: TextAlign.left),
                           ),
                         ),
                       ],
