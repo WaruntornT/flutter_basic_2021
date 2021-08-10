@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_basic_2021/src/Geolocator.dart';
 import 'package:flutter_basic_2021/src/checkPlatform.dart';
 
 // Check Screen Layout
@@ -175,6 +176,31 @@ class _MyHomePageDetailState extends State<MyHomePageDetail> {
                     child: Row(
                       children: <Widget>[
                         ElevatedButton(
+                          child: Text('Example : Geolocator'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => GeolocatorEx()),
+                            );
+                          },
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: new Text(" Geolocator Package : " , textAlign: TextAlign.left),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ), ///Geolocator
+                Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Row(
+                      children: <Widget>[
+                        ElevatedButton(
                           child: Text('Example : App Setting'),
                           onPressed: () {
                             Navigator.push(
@@ -192,7 +218,7 @@ class _MyHomePageDetailState extends State<MyHomePageDetail> {
                       ],
                     ),
                   ),
-                ),
+                ), ///App Setting
                 Padding(
                   padding: const EdgeInsets.all(3.0),
                   child: Align(
@@ -217,7 +243,8 @@ class _MyHomePageDetailState extends State<MyHomePageDetail> {
                       ],
                     ),
                   ),
-                ),
+                ), ///Permission Handler
+
                 Padding(
                   padding: const EdgeInsets.all(3.0),
                   child: Align(
