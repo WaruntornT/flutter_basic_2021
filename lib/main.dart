@@ -211,7 +211,7 @@ class _MyHomePageDetailState extends State<MyHomePageDetail> {
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 3),
-                            child: new Text(" permission_handler Package : เช็คสิทธิและการจัดการต่าง ๆ ตัวอย่าง Location" , textAlign: TextAlign.left),
+                            child: new Text(" permission_handler Package : เช็คสิทธิและการจัดการต่าง ๆ ตัวอย่าง Location (Android)" , textAlign: TextAlign.left),
                           ),
                         ),
                       ],
