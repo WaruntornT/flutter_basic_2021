@@ -7,6 +7,7 @@ import 'package:flutter_basic_2021/src/home.dart';
 
 // Google Maps
 import 'package:flutter_basic_2021/src/gmap.dart';
+import 'package:flutter_basic_2021/src/location_bis_code/locationbiscode.dart';
 import 'package:flutter_basic_2021/src/location_js/locationJs_page.dart';
 
 import 'package:flutter_basic_2021/src/testmappage.dart';
@@ -70,6 +71,36 @@ class _MyHomePageDetailState extends State<MyHomePageDetail> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
+                Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Row(
+                      children: <Widget>[
+                        ElevatedButton(
+                          child: Text('Location BIS Code'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LocationBisCode()),
+                            );
+                          },
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: new Text(" Location Code ที่ใช้ใน Smart Sales BIS Web & App" , textAlign: TextAlign.left),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ), ///LocationBisCode
+                ///
+                SizedBox(
+                  height: 50,
+                ),
+
                 Padding(
                   padding: const EdgeInsets.all(3.0),
                   child: Align(
