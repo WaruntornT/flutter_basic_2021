@@ -7,6 +7,7 @@ import 'package:flutter_basic_2021/src/home.dart';
 
 // Google Maps
 import 'package:flutter_basic_2021/src/gmap.dart';
+import 'package:flutter_basic_2021/src/location_js/locationJs_page.dart';
 
 import 'package:flutter_basic_2021/src/testmappage.dart';
 
@@ -201,6 +202,31 @@ class _MyHomePageDetailState extends State<MyHomePageDetail> {
                     child: Row(
                       children: <Widget>[
                         ElevatedButton(
+                          child: Text('Example : Flutter Web Location JS '),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => PermissionHandler()),
+                            );
+                          },
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: new Text(" Get Location By JS (Support Flutter Web)" , textAlign: TextAlign.left),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ), /// Location JS
+                Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Row(
+                      children: <Widget>[
+                        ElevatedButton(
                           child: Text('Example : App Setting'),
                           onPressed: () {
                             Navigator.push(
@@ -269,7 +295,33 @@ class _MyHomePageDetailState extends State<MyHomePageDetail> {
                       ],
                     ),
                   ),
-                ),
+                ), ///Check Platform
+                ///
+                Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Row(
+                      children: <Widget>[
+                        ElevatedButton(
+                          child: Text('Example : Flutter JS EX: Location'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LocationJsPage()),
+                            );
+                          },
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: new Text(" Flutter JS EX: Location " , textAlign: TextAlign.left),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ), ///Flutter JS EX: Location
                 Padding(
                   padding: const EdgeInsets.all(3.0),
                   child: Align(

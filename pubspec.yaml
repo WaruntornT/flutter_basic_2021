@@ -35,6 +35,9 @@ dependencies:
   app_settings: ^4.1.1
   permission_handler: ^8.1.4+2
 
+  http: ^0.13.3
+  js: ^0.6.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

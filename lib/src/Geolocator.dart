@@ -53,7 +53,9 @@ class _GeolocatorExState extends State<GeolocatorEx> {
     }else{
       platForm_Name = "NULL";
     }
-    _message = "PlatForm_Name : ${platForm_Name}\n";
+    print('kIsWeb : ${kIsWeb}');
+    _message = _message + "kIsWeb : ${kIsWeb}\n";
+    _message = _message + "PlatForm_Name : ${platForm_Name}\n";
 
     bool serviceEnabled;
     LocationPermission permission;
