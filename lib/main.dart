@@ -8,7 +8,9 @@ import 'package:flutter_basic_2021/src/home.dart';
 // Google Maps
 import 'package:flutter_basic_2021/src/gmap.dart';
 import 'package:flutter_basic_2021/src/location_bis_code/locationbiscode.dart';
+import 'package:flutter_basic_2021/src/location_bis_code_test/locationbiscodetest.dart';
 import 'package:flutter_basic_2021/src/location_js/locationJs_page.dart';
+import 'package:flutter_basic_2021/src/showdatetimepicker.dart';
 
 import 'package:flutter_basic_2021/src/testmappage.dart';
 
@@ -96,6 +98,31 @@ class _MyHomePageDetailState extends State<MyHomePageDetail> {
                     ),
                   ),
                 ), ///LocationBisCode
+                Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Row(
+                      children: <Widget>[
+                        ElevatedButton(
+                          child: Text('Location BIS Code (Location Package)'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LocationBisCodeTest()),
+                            );
+                          },
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: new Text(" Location Code ที่ใช้ใน Smart Sales BIS Web & App : (Location Package)" , textAlign: TextAlign.left),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ), ///LocationBisCode Location Package
                 ///
                 SizedBox(
                   height: 50,
@@ -200,7 +227,7 @@ class _MyHomePageDetailState extends State<MyHomePageDetail> {
                       ],
                     ),
                   ),
-                ),
+                ), ///Location Package
                 Padding(
                   padding: const EdgeInsets.all(3.0),
                   child: Align(
@@ -353,6 +380,32 @@ class _MyHomePageDetailState extends State<MyHomePageDetail> {
                     ),
                   ),
                 ), ///Flutter JS EX: Location
+                Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Row(
+                      children: <Widget>[
+                        ElevatedButton(
+                          child: Text('Example : showDateTimePicker & showTimePicker'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ShowDatetimePicker()),
+                            );
+                          },
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: new Text(" showDateTimePicker & showTimePicker " , textAlign: TextAlign.left),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ), ///showDateTimePicker & showTimePicker
+                ///
                 Padding(
                   padding: const EdgeInsets.all(3.0),
                   child: Align(

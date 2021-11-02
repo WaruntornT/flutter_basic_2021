@@ -2,35 +2,40 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/foundation.dart';
-import 'package:location/location.dart' as lo; // GPS Location
+import 'package:location/location.dart'; // GPS Location
+import 'package:flutter/foundation.dart' show kIsWeb; /// Web = true ,Android & iOS = false
 
-class Location extends StatefulWidget {
-  const Location({Key key}) : super(key: key);
+
+
+class LocationBisCodeTest extends StatefulWidget {
+  const LocationBisCodeTest({Key key}) : super(key: key);
 
   @override
-  _LocationState createState() => _LocationState();
+  _LocationBisCodeTestState createState() => _LocationBisCodeTestState();
 }
 
-class _LocationState extends State<Location> {
+class _LocationBisCodeTestState extends State<LocationBisCodeTest> {
 
   @override
-    void dispose() {
-      _locationSubscription?.cancel();
-      setState(() {
-        _locationSubscription = null;
-      });
-      super.dispose();
-    }
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _checkLocation();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Flutter Basic 2021'),
-        ),
-        body:
-        Column(
+      appBar: AppBar(
+        title: Text('Flutter Basic 2021 : 20210826 0456pm'),
+      ),
+      body:
+      Column(
         children: [
           Column(
             children: [
@@ -52,7 +57,7 @@ class _LocationState extends State<Location> {
                       ),
                       ElevatedButton(
                         child: const Text('Request'),
-                        onPressed: _permissionGranted == lo.PermissionStatus.granted
+                        onPressed: _permissionGranted == PermissionStatus.granted
                             ? null
                             : _requestPermission,
                       )
@@ -103,31 +108,58 @@ class _LocationState extends State<Location> {
                   ),
                 ],
               ), /// Listen Location จับ Location ครั้งเดียว
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: <Widget>[
+              //     Text(
+              //       'Listen location: ' + (_error ?? '${_location ?? "unknown"}'),
+              //       style: Theme.of(context).textTheme.bodyText1,
+              //     ),
+              //     Row(
+              //       children: <Widget>[
+              //         Container(
+              //           margin: const EdgeInsets.only(right: 42),
+              //           child: ElevatedButton(
+              //             child: const Text('Listen'),
+              //             onPressed:
+              //             _locationSubscription == null ? _listenLocation : null,
+              //           ),
+              //         ),
+              //         ElevatedButton(
+              //           child: const Text('Stop'),
+              //           onPressed: _locationSubscription != null ? _stopListen : null,
+              //         )
+              //       ],
+              //     ),
+              //   ],
+              // ), /// Listen Location จับ Location ทุก ๆ  5 วินาที
+
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  SizedBox(
+                    height: 31,
+                  ),
                   Text(
-                    'Listen location: ' + (_error ?? '${_location ?? "unknown"}'),
+                    'Test Code\n${location_message}',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   Row(
                     children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.only(right: 42),
-                        child: ElevatedButton(
-                          child: const Text('Listen'),
-                          onPressed:
-                          _locationSubscription == null ? _listenLocation : null,
-                        ),
-                      ),
                       ElevatedButton(
-                        child: const Text('Stop'),
-                        onPressed: _locationSubscription != null ? _stopListen : null,
+                        child: _loading
+                            ? const CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                            : const Text('Get'),
+                        onPressed: () {
+                          _checkLocation();
+                        },
                       )
                     ],
                   ),
                 ],
-              ), /// Listen Location จับ Location ทุก ๆ  5 วินาที
+              ), /// Listen Location จับ Location ครั้งเดียว
             ],
           ),
         ],
@@ -136,29 +168,29 @@ class _LocationState extends State<Location> {
   }
 
   /// Parameter Start
-  final lo.Location location = lo.Location();
-  lo.PermissionStatus _permissionGranted;
+  final Location location = Location();
+  PermissionStatus _permissionGranted;
 
   bool _serviceEnabled;
   bool _loading = false;
-  lo.LocationData _location;
+  LocationData _location;
   String _error;
-  StreamSubscription<lo.LocationData> _locationSubscription;
-  lo.LocationData currentLocation;
+  LocationData currentLocation;
+
+  String location_message;
   /// Parameter End
 
   /// START Function Location
   // เช็ค สิทธ์
   Future<void> _checkPermissions() async {
-    final lo.PermissionStatus permissionGrantedResult =
-    await location.hasPermission();
+    final PermissionStatus permissionGrantedResult = await location.hasPermission();
     setState(() {_permissionGranted = permissionGrantedResult;});
   }
   // ร้องขอ สิทธ์
   Future<void> _requestPermission() async {
-    if (_permissionGranted != lo.PermissionStatus.granted || _permissionGranted == null) {
+    if (_permissionGranted != PermissionStatus.granted || _permissionGranted == null) {
       print('_requestPermission : ${_permissionGranted}');
-      final lo.PermissionStatus permissionRequestedResult = await location.requestPermission();
+      final PermissionStatus permissionRequestedResult = await location.requestPermission();
       setState(() {_permissionGranted = permissionRequestedResult;});
       print('_requestPermission : ${_permissionGranted}');
     }
@@ -187,7 +219,7 @@ class _LocationState extends State<Location> {
       _loading = true;
     });
     try {
-      final lo.LocationData _locationResult = await location.getLocation();
+      final LocationData _locationResult = await location.getLocation();
       setState(() {
         _location = _locationResult;
         _loading = false;
@@ -199,34 +231,64 @@ class _LocationState extends State<Location> {
       });
     }
   }
-  // ตรวจจับ Location ตลอดเวลา
-  Future<void> _listenLocation() async {
-    _locationSubscription = location.onLocationChanged.handleError((dynamic err) {
-      if (err is PlatformException) {
-        setState(() {
-          _error = err.code;
-        });
-      }
-        _locationSubscription?.cancel();
-      setState(() {
-        _locationSubscription = null;
-      });
-    }).listen((lo.LocationData currentLocation) {
-      setState(() {
-        _error = null;
-        _location = currentLocation;
-      });
-    });
-    setState(() { });
-    print('_listenLocation : ${_location}');
-  }
-  // หยุดตรวจจับ Location
-  Future<void> _stopListen() async {
-    _locationSubscription?.cancel();
-    setState(() {
-      _locationSubscription = null;
-    });
-  }
+  // // ตรวจจับ Location ตลอดเวลา
+  // Future<void> _listenLocation() async {
+  //   _locationSubscription = location.onLocationChanged.handleError((dynamic err) {
+  //     if (err is PlatformException) {
+  //       setState(() {
+  //         _error = err.code;
+  //       });
+  //     }
+  //     _locationSubscription?.cancel();
+  //     setState(() {
+  //       _locationSubscription = null;
+  //     });
+  //   }).listen((LocationData currentLocation) {
+  //     setState(() {
+  //       _error = null;
+  //       _location = currentLocation;
+  //     });
+  //   });
+  //   setState(() { });
+  //   print('_listenLocation : ${_location}');
+  // }
+  // // หยุดตรวจจับ Location
+  // Future<void> _stopListen() async {
+  //   _locationSubscription?.cancel();
+  //   setState(() {
+  //     _locationSubscription = null;
+  //   });
+  // }
   /// END Function Location
+
+  _checkLocation() {
+
+    if (!kIsWeb){ //ถ้าไม่ใช่เว็บไซต์
+      // permission = await _locationService.check_Permission();
+      // if(permission == LocationPermission.denied){
+      //   await _locationService.showAlertRequestPermissionLocation(context);
+      // } else if(permission == LocationPermission.deniedForever){
+      //   await _locationService.showAlertRequestPermissionLocationIFdeniedForever(context);
+      // }
+    }else{
+      _checkPermissions();
+      if(_permissionGranted == PermissionStatus.denied || _permissionGranted == null) {
+        _requestPermission();
+      }
+      if(_permissionGranted != PermissionStatus.denied || _permissionGranted != PermissionStatus.deniedForever) {
+        _getLocation();
+      }
+      // else if(permission == LocationPermission.deniedForever){
+      //   await _locationService.showAlertWeb_deniedForever(context);
+      // }
+
+      setState(() {
+        location_message = "\nkIsWeb: ${kIsWeb}\n"
+            "_checkPermissions: ${_permissionGranted}\n"
+            "_getLocation: ${_location}\n";
+      });
+    }
+
+  }
 
 }
