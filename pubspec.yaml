@@ -38,6 +38,8 @@ dependencies:
   http: ^0.13.3
   js: ^0.6.3
 
+  numberpicker: ^2.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
