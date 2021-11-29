@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_basic_2021/src/Geolocator.dart';
+import 'package:flutter_basic_2021/src/NewSingleChildScrollView.dart';
 import 'package:flutter_basic_2021/src/checkPlatform.dart';
 
 // Check Screen Layout
@@ -460,6 +461,32 @@ class _MyHomePageDetailState extends State<MyHomePageDetail> {
                       ),
                     ),
                   ), /// table_calendar
+                  ///
+                  Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Row(
+                        children: <Widget>[
+                          ElevatedButton(
+                            child: Text('Example : SingleChildScrollView'),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => NewSingleChildScrollView()),
+                              );
+                            },
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 3),
+                              child: new Text(" New singlechildscrollview in flutter ^2.5 " , textAlign: TextAlign.left),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ), /// singlechildscrollview not working in flutter ^2.5
                   ///
                   Padding(
                     padding: const EdgeInsets.all(3.0),
