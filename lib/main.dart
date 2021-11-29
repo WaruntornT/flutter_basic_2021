@@ -12,6 +12,7 @@ import 'package:flutter_basic_2021/src/location_bis_code_test/locationbiscodetes
 import 'package:flutter_basic_2021/src/location_js/locationJs_page.dart';
 import 'package:flutter_basic_2021/src/showdatetimepicker.dart';
 import 'package:flutter_basic_2021/src/shownumberpicker.dart';
+import 'package:flutter_basic_2021/src/table_calendar/events_example.dart';
 
 import 'package:flutter_basic_2021/src/testmappage.dart';
 
@@ -433,6 +434,32 @@ class _MyHomePageDetailState extends State<MyHomePageDetail> {
                       ),
                     ),
                   ), /// ShowNumberPicker
+                  ///
+                  Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Row(
+                        children: <Widget>[
+                          ElevatedButton(
+                            child: Text('Example : table_calendar'),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => TableEventsExample()),
+                              );
+                            },
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 3),
+                              child: new Text(" ปฏิทิน table_calendar " , textAlign: TextAlign.left),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ), /// table_calendar
                   ///
                   Padding(
                     padding: const EdgeInsets.all(3.0),
